@@ -17,9 +17,9 @@ public:
     GZ_ASSERT(sdf->HasAttribute("name"), "No [name] attribute");
     std::string joint_name(sdf->GetAttribute("name")->GetAsString());
 
-    // resolve the root model of the joint
-    const physics::ModelPtr joint_root(ResolveModel(world, joint_name));
-    GZ_ASSERT(joint_root, "[name] attribute contains an unknown model name");
+    // resolve the parent model of the joint
+    const physics::ModelPtr joint_model(ResolveModel(world, joint_name));
+    GZ_ASSERT(joint_model, "[name] attribute contains an unknown model name");
 
     // get the joint type from an element. "fixed" is the only supported type for now.
     GZ_ASSERT(sdf->HasElement("type"), "No [type] element");
@@ -27,23 +27,29 @@ public:
     GZ_ASSERT(joint_type == "fixed", "Value of [type] element is not supported");
 
     // find the parent link of joint
-    GZ_ASSERT(sdf->HasElement("parent"), "No [parent] element");
-    std::string parent_name(sdf->Get< std::string >("parent"));
-    const physics::ModelPtr parent_root(ResolveModel(world, parent_name));
-    GZ_ASSERT(parent_root, "Value of [parent] element contains an unknown model name");
-    const physics::LinkPtr parent(parent_root->GetLink(parent_name));
-    GZ_ASSERT(parent, "Cannot find a link with the value of [parent] element");
+    physics::LinkPtr parent;
+    {
+      GZ_ASSERT(sdf->HasElement("parent"), "No [parent] element");
+      std::string name(sdf->Get< std::string >("parent"));
+      const physics::ModelPtr model(ResolveModel(world, name));
+      GZ_ASSERT(model, "Value of [parent] element contains an unknown model name");
+      parent = model->GetLink(name);
+      GZ_ASSERT(parent, "Cannot find a link with the value of [parent] element");
+    }
 
     // find the child link of joint
-    GZ_ASSERT(sdf->HasElement("child"), "No [child] element");
-    std::string child_name(sdf->Get< std::string >("child"));
-    const physics::ModelPtr child_root(ResolveModel(world, child_name));
-    GZ_ASSERT(child_root, "Value of [child] element contains an unknown model name");
-    const physics::LinkPtr child(child_root->GetLink(child_name));
-    GZ_ASSERT(child, "Cannot find a link with the value of [child] element");
+    physics::LinkPtr child;
+    {
+      GZ_ASSERT(sdf->HasElement("child"), "No [child] element");
+      std::string name(sdf->Get< std::string >("child"));
+      const physics::ModelPtr model(ResolveModel(world, name));
+      GZ_ASSERT(model, "Value of [child] element contains an unknown model name");
+      child = model->GetLink(name);
+      GZ_ASSERT(child, "Cannot find a link with the value of [child] element");
+    }
 
     // create the joint
-    const physics::JointPtr joint(joint_root->CreateJoint(joint_name, joint_type, parent, child));
+    const physics::JointPtr joint(joint_model->CreateJoint(joint_name, joint_type, parent, child));
     GZ_ASSERT(joint, "Cannot create a joint with the given type");
     joint->Init();
 
