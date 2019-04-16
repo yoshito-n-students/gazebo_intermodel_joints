@@ -2,7 +2,6 @@
 #define GAZEBO_INTERMODEL_JOINT
 
 #include <iostream>
-#include <sstream>
 #include <string>
 
 #include <gazebo/common/common.hh>
