@@ -9,6 +9,7 @@ project(gazebo_intermodel_joint)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   gazebo_dev
+  roslib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -102,8 +103,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES intermodel_joint
-  CATKIN_DEPENDS gazebo_dev
+#  LIBRARIES intermodel_joint
+  CATKIN_DEPENDS gazebo_dev roslib
 #  DEPENDS system_lib
 )
 
@@ -120,8 +121,8 @@ include_directories(
 
 ## Declare a C++ library
 add_library(
-  intermodel_joint
-   src/gazebo_intermodel_joint.cpp
+  IntermodelJoint
+  src/gazebo_intermodel_joint.cpp
 )
 
 ## Add cmake target dependencies of the library
@@ -146,7 +147,7 @@ add_library(
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
-  intermodel_joint
+  IntermodelJoint
   ${catkin_LIBRARIES}
 )
 

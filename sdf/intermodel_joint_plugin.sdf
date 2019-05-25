@@ -1,0 +1,12 @@
+<!-- format definition for intermodel joint plugin -->
+<element name="plugin" required="1">
+    <description>the root tag</description>
+    <attribute name="name" type="string" default="__default__" required="1">
+        <description>the name of plugin instance</description>
+    </attribute>
+    <attribute name="filename" type="string" default="__default__" required="1">
+        <description>the library file of plugin. normally 'libIntermodelJoints.so'</description>
+    </attribute>
+
+    <include filename="joint.sdf" required="+" />
+</element>
