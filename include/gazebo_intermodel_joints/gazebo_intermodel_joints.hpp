@@ -1,5 +1,5 @@
-#ifndef GAZEBO_INTERMODEL_JOINT
-#define GAZEBO_INTERMODEL_JOINT
+#ifndef GAZEBO_INTERMODEL_JOINTS
+#define GAZEBO_INTERMODEL_JOINTS
 
 #include <iostream>
 #include <string>
@@ -13,7 +13,7 @@
 
 namespace gazebo {
 
-class IntermodelJoint : public WorldPlugin {
+class IntermodelJoints : public WorldPlugin {
 public:
   virtual void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) override {
     const sdf::ElementPtr formatted_sdf(ToPluginSDF(_sdf));
@@ -34,10 +34,10 @@ private:
   // the initialied sdf may look empty but have a format information.
   static sdf::ElementPtr LoadPluginFormat() {
     const sdf::ElementPtr sdf(new sdf::Element());
-    GZ_ASSERT(sdf::initFile(ros::package::getPath("gazebo_intermodel_joint") +
-                                "/sdf/intermodel_joint_plugin.sdf",
+    GZ_ASSERT(sdf::initFile(ros::package::getPath("gazebo_intermodel_joints") +
+                                "/sdf/intermodel_joints_plugin.sdf",
                             sdf),
-              "Cannot initialize sdf by intermodel_joint_plugin.sdf");
+              "Cannot initialize sdf by intermodel_joints_plugin.sdf");
     return sdf;
   }
 
@@ -49,7 +49,7 @@ private:
     const sdf::ElementPtr dst(fmt->Clone());
     GZ_ASSERT(
         sdf::readString("<sdf version='" SDF_VERSION "'>" + _src->ToString("") + "</sdf>", dst),
-        "The given sdf does not match IntermodelJoint plugin format");
+        "The given sdf does not match IntermodelJoints plugin format");
     return dst;
   }
 

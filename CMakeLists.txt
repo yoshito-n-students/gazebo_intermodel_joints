@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(gazebo_intermodel_joint)
+project(gazebo_intermodel_joints)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -103,7 +103,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES intermodel_joint
+#  LIBRARIES intermodel_joints
   CATKIN_DEPENDS gazebo_dev roslib
 #  DEPENDS system_lib
 )
@@ -121,8 +121,8 @@ include_directories(
 
 ## Declare a C++ library
 add_library(
-  IntermodelJoint
-  src/gazebo_intermodel_joint.cpp
+  IntermodelJoints
+  src/gazebo_intermodel_joints.cpp
 )
 
 ## Add cmake target dependencies of the library
@@ -133,7 +133,7 @@ add_library(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/gazebo_intermodel_joint_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/gazebo_intermodel_joints_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -147,7 +147,7 @@ add_library(
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
-  IntermodelJoint
+  IntermodelJoints
   ${catkin_LIBRARIES}
 )
 
@@ -191,7 +191,7 @@ target_link_libraries(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_gazebo_intermodel_joint.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_gazebo_intermodel_joints.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

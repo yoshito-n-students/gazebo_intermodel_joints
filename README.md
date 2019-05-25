@@ -1,2 +1,2 @@
-# gazebo_intermodel_joint
-A gazebo plugin which spawn a joint between 2 models
+# gazebo_intermodel_joints
+A gazebo plugin which spawn joints between 2 models

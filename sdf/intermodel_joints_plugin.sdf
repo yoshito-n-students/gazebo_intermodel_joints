@@ -1,4 +1,4 @@
-<!-- format definition for intermodel joint plugin -->
+<!-- format definition for intermodel joints plugin -->
 <element name="plugin" required="1">
     <description>the root tag</description>
     <attribute name="name" type="string" default="__default__" required="1">
