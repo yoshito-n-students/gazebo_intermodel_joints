@@ -17,8 +17,10 @@ class IntermodelJoints : public WorldPlugin {
 public:
   virtual void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) override {
     const sdf::ElementPtr formatted_sdf(ToPluginSDF(_sdf));
+    plugin_name_ = formatted_sdf->GetAttribute("name")->GetAsString();
 
-    std::cout << "@@@@@ Start" << std::endl;
+    std::cout << "[" << plugin_name_ << "]:"
+              << " Start loading plugin" << std::endl;
 
     // load from [joint] (required, +)
     for (sdf::ElementPtr joint_sdf = formatted_sdf->GetElement("joint"); joint_sdf;
@@ -26,7 +28,8 @@ public:
       LoadJoint(_world, joint_sdf);
     }
 
-    std::cout << "@@@@@ Done" << std::endl;
+    std::cout << "[" << plugin_name_ << "]:"
+              << " Loaded plugin" << std::endl;
   }
 
 private:
@@ -53,7 +56,7 @@ private:
     return dst;
   }
 
-  static void LoadJoint(const physics::WorldPtr &_world, const sdf::ElementPtr &_sdf) {
+  void LoadJoint(const physics::WorldPtr &_world, const sdf::ElementPtr &_sdf) const {
     // clone the given sdf to make local changes to it
     const sdf::ElementPtr sdf(_sdf->Clone());
 
@@ -70,9 +73,6 @@ private:
       }
     }
     GZ_ASSERT(model, "Cannot find a valid model name in the [name] attribute");
-
-    std::cout << "@@@@ Creating a joint \"" << joint_name << "\" under the model \""
-              << model->GetScopedName() << "\"" << std::endl;
 
     // modify the joint name in sdf
     sdf->GetAttribute("name")->Set(joint_name);
@@ -101,7 +101,14 @@ private:
 
     //
     joint->Init();
+
+    std::cout << "[" << plugin_name_ << "]:"
+              << " Created a joint \"" << joint_name << "\" under the model \""
+              << model->GetScopedName() << "\"" << std::endl;
   }
+
+private:
+  std::string plugin_name_;
 };
 
 } // namespace gazebo
