@@ -1,8 +1,8 @@
 # gazebo_intermodel_joints
-A gazebo plugin which spawns joints between 2 models
+A gazebo plugin which spawns joints between two models
 
 ## Quick usage
-If you want to build a robot consisting of a mobile base and two manipulators which have been independently developed, you can compose it for Gazebo simulation by using this plugin.
+For example, if you want to build a robot consisting of a mobile base and two manipulators which have been independently developed, you can define it for Gazebo simulation by using this plugin.
 ```xml
 <!-- In your .world file -->
 
@@ -25,7 +25,7 @@ If you want to build a robot consisting of a mobile base and two manipulators wh
 </include>
 
 <!-- Couplers between the mobile base and arms -->
-<puligin name="couplers" filename="libIntermodelJoints.so">
+<pulgin name="couplers" filename="libIntermodelJoints.so">
     <!-- Intermodel joints definition using regular sdf format -->
     <joint name="mobile_base::left_coupler" type="fixed">
         <parent>mobile_base::body</parent>
@@ -41,7 +41,7 @@ or the final block can be a additional model as follows.
 ```xml
 <!-- Couplers between the mobile base and arms -->
 <model name="couplers" />
-<puligin name="coupler_joints" filename="libIntermodelJoints.so">
+<pulgin name="coupler_joints" filename="libIntermodelJoints.so">
     <!-- Intermodel joints definition using regular sdf format -->
     <joint name="couplers::left_coupler" type="fixed">
         <parent>mobile_base::body</parent>
@@ -55,43 +55,46 @@ or the final block can be a additional model as follows.
 ```
 
 ## Other specifications
-* Tested with Gazebo7 with ROS Kinetic & Gezebo9 with ROS Melodic
+* Tested with Gazebo 7 with ROS Kinetic on Ubuntu 16.04 & Gezebo 9 with ROS Melodic on Ubuntu 18.04
 * Supports all joint types
 * Supports any number of joints
 
 ## Why is this plugin required?
-**Nested model does not work**  
-The following defition is valid but does not work as you expected because [gazebo_ros_control plugin](http://wiki.ros.org/gazebo_ros_control) does not support nested models.
+**Reason 1: Nested model does not work**  
+The following defition does not work with ros_control because [gazebo_ros_control plugin](http://wiki.ros.org/gazebo_ros_control) does not support this use case.
 ```xml
 <model name="mobile_manipulator">
     <include>
-        <!-- gazebo_ros_control plugin does not support nested model! -->
+        <!-- NG: gazebo_ros_control plugin in the vehicle does not work -->
         <uri>model://vehicle</uri>
     </include>
     <include>
-        <!-- gazebo_ros_control plugin does not support nested model! -->
+        <!-- NG: gazebo_ros_control plugin in the manipulator does not work -->
         <uri>model://manipulator</uri>
     </include>
 
     <joint name="coupler" type="fixed">
+        <!-- OK: Gazebo can find links -->
         <parent>vehicle::body</parent>
         <child>manipulator::base</child>
     </joint>
 </model>
 ```
-**External model does not work**  
-Also, the following definition is invalid because Gazebo usually searches the parent link from the joint's parent model (the only exception is the "world" link).
+**Reason 2: External model does not work**  
+Also, the following definition does not work because Gazebo usually searches the parent link from the joint's parent model (the only exception is the "world" link).
 ```xml
 <include>
+    <!-- OK: gazebo_ros_control plugin works -->
     <uri>model://vehicle</uri>
 </include>
 <include>
+    <!-- OK: gazebo_ros_control plugin works -->
     <uri>model://manipulator</uri>
 </include>
 
 <model name="coupler_model">
     <joint name="coupler" type="fixed">
-        <!-- Parent link must belong to coupler_model or be "world" -->
+        <!-- NG: Parent link must belong to coupler_model or be "world" -->
         <parent>vehicle::body</parent>
         <child>manipulator::base</child>
     </joint>
