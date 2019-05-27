@@ -81,7 +81,7 @@ The following defition does not work with ros_control because [gazebo_ros_contro
     </joint>
 </model>
 ```
-**Reason 2: External model does not work**  
+**Reason 2: External model basically does not work**  
 Also, the following definition does not work because Gazebo normally searches the parent link from the joint's parent model (the only exception is the "world" link).
 ```xml
 <include>
@@ -97,6 +97,31 @@ Also, the following definition does not work because Gazebo normally searches th
     <joint name="coupler" type="fixed">
         <!-- NG: Parent link must belong to coupler_model or be "world" -->
         <parent>vehicle::body</parent>
+        <child>manipulator::base</child>
+    </joint>
+</model>
+```
+The following workaround on the final block is possible but not smart as an extra link and joint are required.
+```xml
+<model name="coupler_model">
+    <!-- OK?: An extra link -->
+    <link name="dummy">
+        <inertial>
+           <mass>0.1</mass>
+           <inertia>
+               <ixx>0.01</ixx>
+               <iyy>0.01</iyy>
+               <izz>0.01</izz>
+           </inertia>
+        </inertial>
+    </link>
+    <joint name="coupler1" type="fixed">
+        <parent>dummy</parent>
+        <child>vehicle::body</child>
+    </joint>
+    <!-- OK?: An extra joint -->
+    <joint name="coupler2" type="fixed">
+        <parent>dummy</parent>
         <child>manipulator::base</child>
     </joint>
 </model>
