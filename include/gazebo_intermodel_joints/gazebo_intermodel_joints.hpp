@@ -60,7 +60,7 @@ private:
     // clone the given sdf to make local changes to it
     const sdf::ElementPtr sdf(_sdf->Clone());
 
-    // resolve model & joint names on the basis of [name] element
+    // resolve model & joint names on the basis of [name] attribute
     physics::ModelPtr model;
     std::string joint_name;
     {
@@ -99,7 +99,7 @@ private:
     joint->Load(sdf);
     joint->SetModel(model);
 
-    //
+    // activate the joint
     joint->Init();
 
     std::cout << "[" << plugin_name_ << "]:"
