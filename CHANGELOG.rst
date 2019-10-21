@@ -2,6 +2,10 @@
 Changelog for package gazebo_intermodel_joints
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.0.3 (2019-10-21)
+------------------
+* Improved README
+
 0.0.2 (2019-05-26)
 ------------------
 * Better console outputs
