@@ -2,7 +2,7 @@
 A gazebo plugin which spawns joints between two models
 
 ## Quick usage
-For example, if you want to build a robot consisting of a mobile base and two manipulators which have been independently developed, you can define it for Gazebo simulation by using this plugin.
+For example, if you want to build a robot consisting of a mobile base and two manipulators which have been independently developed, you can define it for Gazebo simulation by using this plugin. In the following example, the pulugin creates coupler joints in the mobile base model.
 ```xml
 <!-- In your .world file -->
 <world name="world">
@@ -38,7 +38,7 @@ For example, if you want to build a robot consisting of a mobile base and two ma
     </plugin>
 </world>
 ```
-or the final block can be an additional model as follows.
+or you can create the coupler joints in another model as follows.
 ```xml
 <!-- Couplers between the mobile base and arms -->
 <model name="couplers" />
@@ -62,7 +62,7 @@ or the final block can be an additional model as follows.
 
 ## Why is this plugin required?
 **Reason 1: Nested model does not work**  
-The following defition does not work with ros_control because [gazebo_ros_control plugin](http://wiki.ros.org/gazebo_ros_control) does not support this use case.
+The following definition does not work with ros_control because [gazebo_ros_control plugin](http://wiki.ros.org/gazebo_ros_control) does not support this use case.
 ```xml
 <model name="mobile_manipulator">
     <include>
