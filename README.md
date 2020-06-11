@@ -2,7 +2,7 @@
 A gazebo plugin which spawns joints between two models
 
 ## Quick usage
-For example, if you want to build a robot consisting of a mobile base and two manipulators which have been independently developed, you can define it for Gazebo simulation by using this plugin. In the following example, the pulugin creates coupler joints in the mobile base model.
+For example, if you want to build a robot consisting of a mobile base and two manipulators which have been independently developed, you can define it for Gazebo simulation by using this plugin. In the following example, the plugin creates coupler joints in the mobile base model.
 ```xml
 <!-- In your .world file -->
 <world name="world">
