@@ -56,6 +56,24 @@ private:
     return dst;
   }
 
+  // wrap a breaking change on World::GetModel()
+  static physics::ModelPtr ModelByName(const physics::WorldPtr &world, const std::string &name) {
+#if GAZEBO_MAJOR_VERSION >= 8
+    return world->ModelByName(name);
+#else
+    return world->GetModel(name);
+#endif
+  }
+
+  // wrap a breaking change on World::GetEntity()
+  static physics::EntityPtr EntityByName(const physics::WorldPtr &world, const std::string &name) {
+#if GAZEBO_MAJOR_VERSION >= 8
+    return world->EntityByName(name);
+#else
+    return world->GetEntity(name);
+#endif
+  }
+
   void LoadJoint(const physics::WorldPtr &_world, const sdf::ElementPtr &_sdf) const {
     // clone the given sdf to make local changes to it
     const sdf::ElementPtr sdf(_sdf->Clone());
@@ -68,7 +86,7 @@ private:
       for (std::size_t model_name_end = scoped_name.rfind("::");
            !model && model_name_end != std::string::npos;
            model_name_end = scoped_name.rfind("::", model_name_end)) {
-        model = _world->GetModel(scoped_name.substr(0, model_name_end));
+        model = ModelByName(_world, scoped_name.substr(0, model_name_end));
         joint_name = scoped_name.substr(model_name_end + 2);
       }
     }
@@ -79,12 +97,12 @@ private:
 
     // find the parent link of joint with the [parent] element
     const physics::LinkPtr parent(boost::dynamic_pointer_cast< physics::Link >(
-        _world->GetEntity(sdf->Get< std::string >("parent"))));
+        EntityByName(_world, sdf->Get< std::string >("parent"))));
     GZ_ASSERT(parent, "Cannot find a link with the value of [parent] element");
 
     // find the child link of joint with the [child] element
     const physics::LinkPtr child(boost::dynamic_pointer_cast< physics::Link >(
-        _world->GetEntity(sdf->Get< std::string >("child"))));
+        EntityByName(_world, sdf->Get< std::string >("child"))));
     GZ_ASSERT(child, "Cannot find a link with the value of [child] element");
 
     // create the joint
